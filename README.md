@@ -7,6 +7,24 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About Project
+# Laragigs
+
+A simple Laravel job board application where developers can **find** or **post** Laravel jobs & projects.  
+Built with **Laravel**, this project is a great example of a CRUD-based application with authentication, listings, and user management.
+
+---
+
+## 🚀 Features
+- Browse available Laravel jobs & freelance projects
+- Post new jobs/projects (requires authentication)
+- Edit & manage your own listings
+- Search & filter job listings
+- User authentication (register/login)
+- Responsive and clean UI
+
+---
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

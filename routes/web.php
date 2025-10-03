@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 
     return view(
-        'listings',
-        [
-            'listing' => Listing::all()
-        ]
+        'listings', [ 'listing' => Listing::all() ]
     );
 });
 

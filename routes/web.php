@@ -3,34 +3,12 @@
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ListingController;
 
 
-Route::get('/', function () {
-
-    return view(
-        'listings', [ 'listing' => Listing::all() ]
-    );
-});
+Route::get('/', [ListingController::class,'index']);
 
 //Single post
 
-Route::get('/listings/{id}', function ($id) {
-
-$listing= Listing::find($id);
-
-
-if($listing){
-  return view('listing',[
-            'listing' => Listing::find($id)
-        ]
-    );  
-}
-else{
-    abort('404');
-}
-
-    // return view('listing',[
-    //         'listing' => Listing::find($id)
-    //     ]
-    // );
-});
+// Route::get('/listings/{id}',[ListingController::class,'show'] );
+Route::get('/listings/{listing}', [ListingController::class, 'show']);

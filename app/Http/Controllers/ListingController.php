@@ -14,7 +14,7 @@ class ListingController extends Controller
     {
 
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag','search']))->get()
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->get()
         ]);
     }
 
@@ -27,7 +27,29 @@ class ListingController extends Controller
 
 
     //Create form
-    public function create(){
-        return view ('listings.create');
+    public function create()
+    {
+        return view('listings.create');
+    }
+
+    //Store data
+    public function store(Request $request)
+    {
+        // dd($request->all());
+        $formfields = $request->validate([
+            'title' => 'required|string',
+            'company' => 'required|string|unique:listings,company',
+            'description' => 'required|string',
+            'location' => 'required',
+            'website' => 'required',
+            'email' => 'required|email|unique:listings,email',
+            'tags' => 'required',
+        ]);
+
+
+        Listing::create($formfields);
+        return redirect('/')->with('message','Blog created successfully');
+
+
     }
 }

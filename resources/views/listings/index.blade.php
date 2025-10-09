@@ -46,5 +46,9 @@
             </div> --}}
         @endforeach
 
+        <div class="justify-content-center d-flex">
+            {{ $listings->links() }}
+        </div>
+
     </div>
 @endsection

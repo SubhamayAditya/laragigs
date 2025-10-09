@@ -8,48 +8,52 @@ use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
-
-    //Show all listing
+    // Show all listings
     public function index()
     {
-
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag', 'search']))->get()
+            'listings' => Listing::latest()
+                ->filter(request(['tag', 'search']))
+                ->paginate(6)
         ]);
     }
 
-
-    //Show single listing
+    // Show single listing
     public function show(Listing $listing)
     {
         return view('listings.show', ['listing' => $listing]);
     }
 
-
-    //Create form
+    // Show create form
     public function create()
     {
         return view('listings.create');
     }
 
-    //Store data
+    // Store new listing
     public function store(Request $request)
     {
-        // dd($request->all());
-        $formfields = $request->validate([
+        // Validate form fields
+        $formFields = $request->validate([
             'title' => 'required|string',
+            'logo' => 'required|mimes:jpeg,jpg,png|max:2048', // <-- using 'logo' field
             'company' => 'required|string|unique:listings,company',
             'description' => 'required|string',
-            'location' => 'required',
-            'website' => 'required',
+            'location' => 'required|string',
+            'website' => 'required|url',
             'email' => 'required|email|unique:listings,email',
-            'tags' => 'required',
+            'tags' => 'required|string',
         ]);
 
+        // Handle file upload
+        if ($request->hasFile('logo')) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
 
-        Listing::create($formfields);
-        return redirect('/')->with('message','Blog created successfully');
+        // Create listing
+        Listing::create($formFields);
 
-
+        return redirect('/')
+            ->with('message', 'Listing created successfully!');
     }
 }

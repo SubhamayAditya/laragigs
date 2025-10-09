@@ -10,16 +10,19 @@
     </a>
     <div class="mx-4">
         {{-- <div class="bg-gray-50 border border-gray-200 p-10 rounded"> --}}
-            <x-card class="p-10 bg-black">
+        <x-card class="p-10 bg-black">
             <div class="flex flex-col items-center justify-center text-center">
-                <img class="w-48 mr-6 mb-6" src="{{ asset('images/no-image.png') }}" alt="" />
+                <img class="w-48 mr-6 mb-6"
+                    src="{{ $listing->logo ? asset('storage/' . $listing->logo) : asset('/images/no-image.png') }}"
+                    alt="{{ $listing->title }}" />
+
 
                 <h3 class="text-2xl mb-2">{{ $listing->title }}</h3>
                 <div class="text-xl font-bold mb-4">{{ $listing->company }}</div>
 
-                {{--********** tags **********--}}
+                {{-- ********** tags ********** --}}
                 <x-listing-tags :tagsValues="$listing->tags" />
-              
+
                 <div class="text-lg my-4">
                     <i class="fa-solid fa-location-dot"></i> {{ $listing->location }}
                 </div>
@@ -45,7 +48,12 @@
                     </div>
                 </div>
             </div>
-        {{-- </div> --}}
+            {{-- </div> --}}
         </x-card>
+
+
+        <a href="/listings/{{ $listing->id }}/edit/"
+            class="block bg-laravel text-white mt-6 py-2 rounded-xl hover:opacity-80 mt-4 p-2  flex space-x-6"><i
+                class="fa-solid fa-pencil"></i> Edit</a>
     </div>
 @endsection

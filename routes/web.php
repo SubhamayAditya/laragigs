@@ -17,7 +17,8 @@ Route::post('/listings', [ListingController::class, 'store']);
 //Show Edit Form
 Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('edit');
 
-
+//Update
+Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('update');
 
 
 

@@ -57,14 +57,35 @@ class ListingController extends Controller
             ->with('message', 'Listing created successfully!');
     }
 
-
-
+   
 
     //Show edit form
-
     public function edit(Listing $listing)
     {
         // dd($listing);
          return view('listings.edit', ['listing' => $listing]);
     }
+
+public function update(Request $request, Listing $listing)
+{
+    $formFields = $request->validate([
+        'title' => 'required|string',
+        'company' => 'required|string',
+        'description' => 'required|string',
+        'location' => 'required|string',
+        'website' => 'required|url',
+        'email' => 'required|email|unique:listings,email',
+        'tags' => 'required|string',
+    ]);
+
+    // Only validate logo if a new file is uploaded
+    if ($request->hasFile('logo')) {
+        $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+    }
+
+    $listing->update($formFields);
+
+    return redirect('/')->with('message', 'Listing Updated Successfully!');
+}
+
 }

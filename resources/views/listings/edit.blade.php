@@ -10,6 +10,7 @@
             </header>
 
             <form action="{{ route('update', $listing->id) }}" method="POST" enctype="multipart/form-data">
+                
                 @csrf
                 @method('PUT')
                 <div class="mb-6">

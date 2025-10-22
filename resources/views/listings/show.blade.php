@@ -53,7 +53,16 @@
 
 
         <a href="/listings/{{ $listing->id }}/edit/"
-            class="block bg-laravel text-white mt-6 py-2 rounded-xl hover:opacity-80 mt-4 p-2  flex space-x-6"><i
-                class="fa-solid fa-pencil"></i> Edit</a>
+            class="block bg-laravel text-white mt-6 py-2 rounded-xl hover:opacity-80 mt-4 p-2  flex space-x-6">
+            <i class="fa-solid fa-pencil"></i> Edit
+        </a>
+
+        <form action="{{ route('delete', $listing->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button class="text-red-500"><i class="fa-solid fa-trash"></i> Delete</button>
+        </form>
+
     </div>
 @endsection

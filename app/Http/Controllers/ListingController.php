@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class ListingController extends Controller
 {
@@ -57,35 +59,47 @@ class ListingController extends Controller
             ->with('message', 'Listing created successfully!');
     }
 
-   
+
 
     //Show edit form
     public function edit(Listing $listing)
     {
-        // dd($listing);
-         return view('listings.edit', ['listing' => $listing]);
+        // dd($listing->title);
+        return view('listings.edit', ['listing' => $listing]);
     }
 
-public function update(Request $request, Listing $listing)
-{
-    $formFields = $request->validate([
-        'title' => 'required|string',
-        'company' => 'required|string',
-        'description' => 'required|string',
-        'location' => 'required|string',
-        'website' => 'required|url',
-        'email' => 'required|email|unique:listings,email',
-        'tags' => 'required|string',
-    ]);
+    //Update form
+    public function update(Request $request, Listing $listing)
+    {
+        $formFields = $request->validate([
+            'title' => 'required|string',
+            'company' => ['required', 'string', Rule::unique('listings')->ignore($listing->id)],
+            'description' => 'required|string',
+            'location' => 'required|string',
+            'website' => 'required|url',
+            'email' => ['required', 'email', Rule::unique('listings')->ignore($listing->id)],
+            'tags' => 'required|string',
+        ]);
 
-    // Only validate logo if a new file is uploaded
-    if ($request->hasFile('logo')) {
-        $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        if ($request->hasFile('logo')) {
+            if ($listing->logo && Storage::disk('public')->exists($listing->logo)) {
+                Storage::disk('public')->delete($listing->logo);
+            }
+
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        $listing->update($formFields);
+
+        return redirect('/')->with('message', 'Listing Updated Successfully!');
     }
 
-    $listing->update($formFields);
 
-    return redirect('/')->with('message', 'Listing Updated Successfully!');
-}
+    //Delete
+    public function delete(Listing $listing)
+    {
 
+        $listing->delete();
+        return redirect('/')->with('message', 'Deleted Successfully!');
+    }
 }

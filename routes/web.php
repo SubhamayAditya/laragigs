@@ -20,6 +20,8 @@ Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name
 //Update
 Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('update');
 
+//Delete
+Route::delete('/listings/{listing}', [ListingController::class, 'delete'])->name('delete');
 
 
 //Single post

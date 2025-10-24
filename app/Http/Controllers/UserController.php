@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // ✅ import Auth facade
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -33,5 +34,39 @@ class UserController extends Controller
 
         // Redirect with message
         return redirect('/')->with('message', 'User created successfully!');
+    }
+
+
+    public function logout(Request $request)
+    {
+        auth()->logout();
+
+        // Invalidate and regenerate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('message', 'You have been logged out!');
+    }
+
+
+    public function login()
+    {
+        return view('users.login');
+    }
+
+    public function authenticate(Request $request)
+    {
+        $formFields = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if(auth()->attempt($formFields)){
+            $request->session()->regenerate();
+
+            return redirect('/')->with('message','You have Successfully loged in');
+        }
+
+        return back()->withErrors(['email'=>'invalied credentials'])->onlyInput('email');
     }
 }

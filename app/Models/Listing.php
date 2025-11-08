@@ -28,4 +28,9 @@ protected $fillable=['title','description','location','tags','email','website','
         }
         
     }
+
+    //relationship to User
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
